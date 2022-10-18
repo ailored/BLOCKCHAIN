@@ -7,9 +7,12 @@ class Blockchain {
   List<Block> chain = [];
   List<Transaction> currentTransactions = [];
 
+  Blockchain();
+  Blockchain.genesisBlock() { newBlock(proof: 25072003, previousHash: 'derkach'); }
+
   Block lastBlock() => chain.last;
 
-  Block newBlock(int proof, String previousHash) {
+  Block newBlock({int proof=0, String previousHash=''}) {
     List<Transaction> transactions = currentTransactions.toList();
 
     Block newBlock = Block(chain.length, proof, previousHash, transactions);
@@ -21,7 +24,7 @@ class Blockchain {
   }
 
   int newTransaction(String sender, String recipient, int amount) {
-    currentTransactions.add(Transaction(sender, recipient, amount));
+    currentTransactions.add(Transaction(currentTransactions.length+1, sender, recipient, amount));
 
     return chain.length;
   }

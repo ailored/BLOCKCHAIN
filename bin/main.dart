@@ -4,9 +4,10 @@ import 'package:blockchain/blockchain.dart';
 void main(List<String> arguments) {
   print("\n${'=' * 50} BLOCKCHAIN LAB-1 ${'=' * 50}");
 
+
   Blockchain blockchain = Blockchain();
 
-  blockchain.newBlock(25072003, 'derkach'); //* genesis block
+  blockchain.newBlock(proof: 25072003, previousHash: 'derkach'); //* genesis block
 
   for (var i = 0; i < 5; i++) {
     for (var i = 0; i < Random().nextInt(10); i++) {
@@ -16,10 +17,10 @@ void main(List<String> arguments) {
           Random().nextInt(10000));
     }
     blockchain.newBlock(
-        blockchain.proofOfWork(i, blockchain.lastBlock().proof,
-            blockchain.lastBlock().currentHash),
-        blockchain.lastBlock().currentHash);
+        proof: blockchain.proofOfWork(i, blockchain.lastBlock().proof, blockchain.lastBlock().currentHash),
+        previousHash: blockchain.lastBlock().currentHash);
   }
+  
   print(blockchain);
   print('${'=' * 118}\n');
 }

@@ -4,28 +4,25 @@ import 'package:blockchain/blockchain.dart';
 void main(List<String> arguments) {
   print("\n${'=' * 50} BLOCKCHAIN LAB-1 ${'=' * 50}");
 
-
-  Blockchain blockchain = Blockchain();
-
-  blockchain.newBlock(proof: 25072003, previousHash: 'derkach'); //* genesis block
+  Blockchain doeBlockchain = Blockchain.doeGenesisBlock();
 
   for (var i = 0; i < 5; i++) {
     for (var i = 0; i < Random().nextInt(10); i++) {
-      blockchain.newTransaction(
-          usersData[Random().nextInt(usersData.length)],
-          usersData[Random().nextInt(usersData.length)],
+      doeBlockchain.doeNewTransaction(
+          doeUsersData[Random().nextInt(doeUsersData.length)],
+          doeUsersData[Random().nextInt(doeUsersData.length)],
           Random().nextInt(10000));
     }
-    blockchain.newBlock(
-        proof: blockchain.proofOfWork(i, blockchain.lastBlock().proof, blockchain.lastBlock().currentHash),
-        previousHash: blockchain.lastBlock().currentHash);
+    doeBlockchain.doeNewBlock(
+        doeProof: doeBlockchain.doeProofOfWork(i, doeBlockchain.doeLastBlock().doeProof, doeBlockchain.doeLastBlock().doeCurrentHash),
+        doePreviousHash: doeBlockchain.doeLastBlock().doeCurrentHash);
   }
-  
-  print(blockchain);
+
+  print(doeBlockchain);
   print('${'=' * 118}\n');
 }
 
-const List<String> usersData = [
+const List<String> doeUsersData = [
   "Wendi Matthews",
   "Meyers Briggs",
   "Woodard Gross",

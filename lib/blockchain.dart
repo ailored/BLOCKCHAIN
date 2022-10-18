@@ -4,55 +4,55 @@ import 'package:blockchain/block.dart';
 import 'package:blockchain/transaction.dart';
 
 class Blockchain {
-  List<Block> chain = [];
-  List<Transaction> currentTransactions = [];
+  List<Block> doeChain = [];
+  List<Transaction> doeCurrentTransactions = [];
 
   Blockchain();
-  Blockchain.genesisBlock() { newBlock(proof: 25072003, previousHash: 'derkach'); }
+  Blockchain.doeGenesisBlock() { doeNewBlock(doeProof: 25072003, doePreviousHash: 'derkach'); }
 
-  Block lastBlock() => chain.last;
+  Block doeLastBlock() => doeChain.last;
 
-  Block newBlock({int proof=0, String previousHash=''}) {
-    List<Transaction> transactions = currentTransactions.toList();
+  Block doeNewBlock({int doeProof=0, String doePreviousHash=''}) {
+    List<Transaction> doeTransactions = doeCurrentTransactions.toList();
 
-    Block newBlock = Block(chain.length, proof, previousHash, transactions);
+    Block doeNewBlock = Block(doeChain.length, doeProof, doePreviousHash, doeTransactions);
 
-    currentTransactions.clear();
-    chain.add(newBlock);
+    doeCurrentTransactions.clear();
+    doeChain.add(doeNewBlock);
 
-    return newBlock;
+    return doeNewBlock;
   }
 
-  int newTransaction(String sender, String recipient, int amount) {
-    currentTransactions.add(Transaction(currentTransactions.length+1, sender, recipient, amount));
+  int doeNewTransaction(String doeSender, String doeRecipient, int doeAmount) {
+    doeCurrentTransactions.add(Transaction(doeCurrentTransactions.length+1, doeSender, doeRecipient, doeAmount));
 
-    return chain.length;
+    return doeChain.length;
   }
 
-  String hashBlock(int index, int proof, String previousHash) {
-    StringBuffer hashBlock = StringBuffer()
-      ..write(index)
-      ..write(proof)
-      ..write(previousHash);
+  String doeHashBlock(int doeIndex, int doeProof, String doePreviousHash) {
+    StringBuffer doeHashBlock = StringBuffer()
+      ..write(doeIndex)
+      ..write(doeProof)
+      ..write(doePreviousHash);
 
-    return sha256.convert(utf8.encode(hashBlock.toString())).toString();
+    return sha256.convert(utf8.encode(doeHashBlock.toString())).toString();
   }
 
-  int proofOfWork(int index, int lastPOW, String previousHash) {
-    int proof = 0;
-    while (!isProofValid(index, lastPOW, proof, previousHash)) {
-      proof++;
+  int doeProofOfWork(int doeIndex, int doeLastPOW, String doePreviousHash) {
+    int doeProof = 0;
+    while (!isProofValid(doeIndex, doeLastPOW, doeProof, doePreviousHash)) {
+      doeProof++;
     }
 
-    return proof;
+    return doeProof;
   }
 
-  bool isProofValid(int index, int lastPOW, int proof, String previousHash) =>
+  bool isProofValid(int doeIndex, int doeLastPOW, int doeProof, String doePreviousHash) =>
       sha256
-          .convert(utf8.encode('$index$proof$previousHash'))
+          .convert(utf8.encode('$doeIndex$doeProof$doePreviousHash'))
           .toString()
           .endsWith('07');
 
   @override
-  String toString() => "BLOCKCHAIN: $chain";
+  String toString() => "BLOCKCHAIN: $doeChain";
 }

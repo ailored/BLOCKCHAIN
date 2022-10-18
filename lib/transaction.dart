@@ -1,11 +1,11 @@
 class Transaction {
-  int index;
-  String sender;
-  String recipient;
-  int amount;
+  int doeIndex;
+  String doeSender;
+  String doeRecipient;
+  int doeAmount;
 
-  Transaction(this.index, this.sender, this.recipient, this.amount);
+  Transaction(this.doeIndex, this.doeSender, this.doeRecipient, this.doeAmount);
 
   @override
-  String toString() => '\n [$index] FROM: $sender => TO: $recipient == AMOUNT: $amount USD';
+  String toString() => '\n [$doeIndex] FROM: $doeSender => TO: $doeRecipient == AMOUNT: $doeAmount USD';
 }

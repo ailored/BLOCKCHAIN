@@ -7,18 +7,21 @@ void main(List<String> arguments) {
   Blockchain doeBlockchain = Blockchain.doeGenesisBlock();
 
   for (var i = 0; i < 5; i++) {
-    for (var i = 0; i < Random().nextInt(10); i++) {
+    for (var i = 0; i < Random().nextInt(5); i++) {
       doeBlockchain.doeNewTransaction(
           doeUsersData[Random().nextInt(doeUsersData.length)],
           doeUsersData[Random().nextInt(doeUsersData.length)],
           Random().nextInt(10000));
     }
-    doeBlockchain.doeNewBlock(
-        doeProof: doeBlockchain.doeProofOfWork(i, doeBlockchain.doeLastBlock().doeProof, doeBlockchain.doeLastBlock().doeCurrentHash),
-        doePreviousHash: doeBlockchain.doeLastBlock().doeCurrentHash);
+
+    String blockHash = doeBlockchain.doeHashBlock(doeBlockchain.doeLastBlock());
+    int proof = doeBlockchain.doeProofOfWork(doeBlockchain.doeLastBlock());
+    doeBlockchain.doeNewBlock(proof, blockHash);
+
+    print(doeBlockchain.doeChain[i]);
+    print('${' ' * 12} CURRENT HASH: $blockHash');
   }
 
-  print(doeBlockchain);
   print('${'=' * 118}\n');
 }
 

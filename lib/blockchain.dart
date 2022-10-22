@@ -7,16 +7,14 @@ class Blockchain {
   List<Block> doeChain = [];
   List<Transaction> doeCurrentTransactions = [];
 
-  Blockchain();
-  Blockchain.doeGenesisBlock() { doeNewBlock(doeProof: 25072003, doePreviousHash: 'derkach'); }
+  Blockchain.doeGenesisBlock() { doeNewBlock(25072003, 'derkach'); }
 
   Block doeLastBlock() => doeChain.last;
 
-  Block doeNewBlock({int doeProof=0, String doePreviousHash=''}) {
+  Block doeNewBlock(int doeProof, String doePreviousHash) {
     List<Transaction> doeTransactions = doeCurrentTransactions.toList();
 
     Block doeNewBlock = Block(doeChain.length, doeProof, doePreviousHash, doeTransactions);
-
     doeCurrentTransactions.clear();
     doeChain.add(doeNewBlock);
 
@@ -29,27 +27,28 @@ class Blockchain {
     return doeChain.length;
   }
 
-  String doeHashBlock(int doeIndex, int doeProof, String doePreviousHash) {
+  String doeHashBlock(Block block) {
     StringBuffer doeHashBlock = StringBuffer()
-      ..write(doeIndex)
-      ..write(doeProof)
-      ..write(doePreviousHash);
+      ..write(block.doeIndex)
+      ..write(doeProofOfWork(block))
+      ..write(block.doePreviousHash)
+      ..write(block.doeTimestamp);
 
     return sha256.convert(utf8.encode(doeHashBlock.toString())).toString();
   }
 
-  int doeProofOfWork(int doeIndex, int doeLastPOW, String doePreviousHash) {
-    int doeProof = 0;
-    while (!isProofValid(doeIndex, doeLastPOW, doeProof, doePreviousHash)) {
-      doeProof++;
+  int doeProofOfWork(Block block) {
+    int doeNewProof = 0;
+    while (!isProofValid(block.doeIndex, block.doeProof, doeNewProof, block.doePreviousHash, block.doeTimestamp)) {
+      doeNewProof++;
     }
 
-    return doeProof;
+    return doeNewProof;
   }
 
-  bool isProofValid(int doeIndex, int doeLastPOW, int doeProof, String doePreviousHash) =>
+  bool isProofValid(int doeIndex, int doeLastPOW, int doeProof, String doePreviousHash, int doeTimestamp) =>
       sha256
-          .convert(utf8.encode('$doeIndex$doeProof$doePreviousHash'))
+          .convert(utf8.encode('$doeIndex$doeProof$doePreviousHash$doeTimestamp'))
           .toString()
           .endsWith('07');
 
